@@ -1,3 +1,5 @@
+const { expect, test } = require('@jest/globals');
+const exp = require('constants');
 const Player = require('../lib/Player');
 const SelfCare = require('../lib/SelfCare');
 
@@ -32,6 +34,35 @@ test('gets inventory from player or returns false', () => {
     player.inventory = [];
 
     expect(player.getInventory()).toEqual(false);
+});
+
+test('gets player health value', () => {
+    const player = new Player('Emily');
+
+    expect(player.getHealth()).toEqual(expect.stringContaining(player.health.toString()));
+});
+
+test('checks if player is still alive', () => {
+    const player = new Player('Emily');
+
+    expect(player.isAlive()).toBeTruthy();
+
+    player.health = 0;
+
+    expect(player.isAlive()).toBeFalsy();
+});
+
+test('subtracts from player halth', () => {
+    const player = new Player('Emily');
+    const oldHealth = player.health;
+
+    player.reduceHealth(5);
+
+    expect(player.health).toBe(oldHealth - 5);
+
+    player.reduceHealth(9999);
+
+    expect(player.health).toBe(0);
 });
 
 console.log(new SelfCare());
